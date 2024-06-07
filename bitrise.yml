@@ -1,0 +1,21 @@
+---
+format_version: '8'
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: ios
+workflows:
+  archive_and_export_app:
+    steps:
+      - git-clone: {}
+      - restore-cocoapods-cache: {}
+      - script:
+          title: Add gonativeio-gonative-specs repo
+          inputs:
+            - content: |-
+                #!/bin/bash
+                pod repo add gonativeio-gonative-specs git@github.com:gonativeio/gonative-specs.git
+      - cocoapods-install:
+          inputs:
+            - update_pod_repo: "no"
+      - xcode-build-for-test: {}
+      - save-cocoapods-cache: {}
+      - deploy-to-bitrise-io: {}
